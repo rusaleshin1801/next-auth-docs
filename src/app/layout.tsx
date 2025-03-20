@@ -1,7 +1,7 @@
 import ReduxProvider from "@/providers/ReduxProvider";
 
 export const metadata = {
-  title: "product",
+  title: "user docs",
 };
 
 export default function RootLayout({

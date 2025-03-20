@@ -1,2 +1,3 @@
-export * from "./products-table";
-export * from "./create-update-product";
+export * from "./user-docs";
+export * from "./create-update-docs";
+export * from "./auth";

@@ -7,15 +7,19 @@ export const StyledBox = styled(Box)({
   justifyContent: "center",
 });
 
-export const StyledPaper = styled(Paper)({
-  width: "1200px",
-  overflow: "hidden",
+export const StyledPaper = styled(Paper)(({ theme }) => ({
+  margin: "40px auto",
+  width: "1400px",
   padding: "16px",
   borderRadius: "16px",
   display: "flex",
+  justifyContent: "center",
   flexDirection: "column",
   gap: "16px",
-});
+  [theme.breakpoints.down("lg")]: {
+    width: "100%",
+  },
+}));
 
 export const ControlsContainer = styled(Box)(({ theme }) => ({
   display: "flex",

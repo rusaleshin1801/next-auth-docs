@@ -2,7 +2,7 @@
 
 import React, { ReactNode, isValidElement } from "react";
 import { ButtonProps as MuiButtonProps } from "@mui/material/Button";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import clsx from "clsx";
 import { StyledButton } from "./styles";
 
@@ -12,6 +12,7 @@ interface CustomButtonProps extends Omit<MuiButtonProps, "variant" | "color"> {
   label?: string | ReactNode;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   startIcon?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export const Button: React.FC<CustomButtonProps> = ({
@@ -21,6 +22,7 @@ export const Button: React.FC<CustomButtonProps> = ({
   disabled = false,
   label = "",
   startIcon,
+  isLoading = false,
   ...rest
 }) => {
   const buttonClass =
@@ -29,7 +31,7 @@ export const Button: React.FC<CustomButtonProps> = ({
   return (
     <StyledButton
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       className={clsx(buttonClass)}
       disableRipple
       startIcon={startIcon}
@@ -40,7 +42,9 @@ export const Button: React.FC<CustomButtonProps> = ({
           : {}),
       }}
     >
-      {isValidElement(label) ? (
+      {isLoading ? (
+        <CircularProgress size={18} sx={{ color: "#fff" }} />
+      ) : isValidElement(label) ? (
         label
       ) : (
         <Typography

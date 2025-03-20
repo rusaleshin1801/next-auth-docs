@@ -6,8 +6,10 @@ import {
   InputLabel,
   Box,
   Typography,
+  IconButton,
 } from "@mui/material";
-import React, { ReactNode, forwardRef } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import React, { ReactNode, forwardRef, useState } from "react";
 import { StyledTextField } from "./styles";
 
 export interface InputProps extends Omit<TextFieldProps, "variant"> {
@@ -35,10 +37,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onChange,
     onBlur,
     startIcon,
-    endIcon,
     sx,
     ...rest
   } = props;
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   return (
     <Box
@@ -56,7 +63,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       )}
       <StyledTextField
         placeholder={placeholder}
-        type={type}
+        type={type === "password" ? (showPassword ? "text" : "password") : type}
         disabled={disabled}
         onChange={onChange}
         onBlur={onBlur}
@@ -67,16 +74,35 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           startAdornment: startIcon && (
             <InputAdornment position="start">{startIcon}</InputAdornment>
           ),
-          endAdornment: endIcon && (
-            <InputAdornment position="end">{endIcon}</InputAdornment>
-          ),
+          endAdornment:
+            type === "password" ? (
+              <InputAdornment
+                position="end"
+                sx={{ marginRight: "8px", opacity: "0.4" }}
+              >
+                <IconButton onClick={handleTogglePassword} edge="end">
+                  {showPassword ? (
+                    <VisibilityOff sx={{ fontSize: "16px" }} />
+                  ) : (
+                    <Visibility sx={{ fontSize: "16px" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ) : (
+              rest.endIcon && (
+                <InputAdornment position="end">{rest.endIcon}</InputAdornment>
+              )
+            ),
         }}
         sx={sx}
         {...rest}
       />
 
       {errorMessage && (
-        <Typography color="error" sx={{ fontSize: "12px", marginTop: "4px" }}>
+        <Typography
+          color="error"
+          sx={{ fontSize: "12px", marginTop: "4px", fontStyle: "italic" }}
+        >
           {errorMessage}
         </Typography>
       )}
